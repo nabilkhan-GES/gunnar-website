@@ -56,6 +56,8 @@ const rest = videos; // full library, newest-first (channel chronological order)
         ))}
       </div>
 
+      <p class="v-count" aria-live="polite">Showing all {videos.length} videos</p>
+
       <!-- grid (newest → oldest) -->
       <div class="v-grid">
         {rest.map((v) => (
@@ -114,12 +116,15 @@ const rest = videos; // full library, newest-first (channel chronological order)
   .v-card:hover .v-thumb { filter: none; transform: scale(1.03); }
   .v-dur { position: absolute; bottom: 8px; right: 8px; font-family: var(--mono); font-size: 11px; color: #fff; background: rgba(6,8,10,0.82); padding: 2px 6px; }
   .v-title { font-family: var(--display-n); font-weight: 700; font-size: 15px; line-height: 1.28; color: var(--text); margin: 12px 0 0; }
-  /* play glyph — yellow disc + CSS triangle */
-  .v-play { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 52px; height: 52px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,0.3); transition: transform .2s ease; }
-  .v-card:hover .v-play { transform: translate(-50%, -50%) scale(1.08); }
-  .v-play::after { content: ""; width: 0; height: 0; border-left: 16px solid #0A0C0F; border-top: 10px solid transparent; border-bottom: 10px solid transparent; margin-left: 4px; }
-  .v-play--lg { width: 88px; height: 88px; }
-  .v-play--lg::after { border-left-width: 27px; border-top-width: 16px; border-bottom-width: 16px; margin-left: 7px; }
+  /* play glyph — quiet at rest (translucent + white triangle); electric-yellow on hover/focus */
+  .v-play { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 52px; height: 52px; border-radius: 50%; background: rgba(10,12,15,0.5); border: 1px solid rgba(255,255,255,0.55); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,0.3); transition: background .2s ease, border-color .2s ease, transform .2s ease; }
+  .v-play::after { content: ""; width: 0; height: 0; border-left: 15px solid #fff; border-top: 9px solid transparent; border-bottom: 9px solid transparent; margin-left: 4px; transition: border-left-color .2s ease; }
+  .v-card:hover .v-play, .v-card:focus-within .v-play { background: var(--accent); border-color: var(--accent); transform: translate(-50%, -50%) scale(1.08); }
+  .v-card:hover .v-play::after, .v-card:focus-within .v-play::after { border-left-color: #0A0C0F; }
+  /* featured player keeps the bold yellow disc */
+  .v-play--lg { width: 88px; height: 88px; background: var(--accent); border: 0; backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .v-play--lg::after { border-left: 27px solid #0A0C0F; border-top-width: 16px; border-bottom-width: 16px; margin-left: 7px; }
+  .v-count { font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-faint); margin: 0 0 18px; }
   .v-empty { font-family: var(--mono); font-size: 13px; color: var(--text-faint); padding: 24px 0; }
   @media (max-width: 700px) { .v-grid { grid-template-columns: 1fr 1fr; gap: 14px; } .v-title { font-size: 13px; } }
   @media (max-width: 440px) { .v-grid { grid-template-columns: 1fr; } }
@@ -133,6 +138,7 @@ const rest = videos; // full library, newest-first (channel chronological order)
   const chips = [...document.querySelectorAll('.v-chip')];
   const cards = [...document.querySelectorAll('.v-card')];
   const empty = document.querySelector('.v-empty');
+  const count = document.querySelector('.v-count');
   chips.forEach((chip) => {
     chip.addEventListener('click', () => {
       const k = chip.dataset.filter;
@@ -143,6 +149,7 @@ const rest = videos; // full library, newest-first (channel chronological order)
         card.hidden = !match;
         if (match) shown++;
       });
+      if (count) count.textContent = k === 'all' ? `Showing all ${shown} videos` : `Showing ${shown} of ${cards.length} videos`;
       if (empty) empty.hidden = shown !== 0;
     });
   });
