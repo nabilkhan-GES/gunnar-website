@@ -5,7 +5,6 @@
    hairline structure, electric-yellow as the lone accent.
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Archivo+Expanded:wght@500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=Libre+Franklin:wght@400;500;600&display=swap');
 
 :root {
   --ground:    #0A0C0F;   /* page */
@@ -14,7 +13,7 @@
   --surface-2: #16191F;   /* insets, hover */
   --text:      #EAECEF;
   --text-dim:  #9AA2AC;
-  --text-faint:#5C636D;
+  --text-faint:#7A828C;   /* WCAG AA: ≥4.5:1 on all grounds */
   --line:      rgba(255,255,255,0.12);
   --line-2:    rgba(255,255,255,0.06);
   --line-strong: rgba(255,255,255,0.24);
@@ -112,14 +111,52 @@ img { max-width: 100%; display: block; }
 .hgrid { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); }
 .hgrid > * { background: var(--ground); }
 
+/* Five ranging-method cards: an explicit single-row hairline grid. 5 is prime, so
+   auto-fit orphans a partial row (empty line-colored cells); a fixed 5-up never does. */
+.hgrid.method-grid { grid-template-columns: repeat(5, 1fr); }
+@media (max-width: 1080px) { .hgrid.method-grid { grid-template-columns: 1fr; } }
+
+/* "The rest of the arsenal" — 6 related tools; 3×2 (then 2, then 1) keeps every row full. */
+.hgrid.arsenal-grid { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 900px) { .hgrid.arsenal-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .hgrid.arsenal-grid { grid-template-columns: 1fr; } }
+
+/* Orphan-proof hairline grid — for grids with variable / non-divisible item counts.
+   Transparent container + a real gap means a partial last row leaves invisible space
+   instead of empty line-colored cells. Each child carries its own border (.tile already
+   does; plain children get one here), so it still reads as a crisp bordered grid. */
+.hgrid.flow { background: transparent; border: 0; gap: 14px; }
+.hgrid.flow > *:not(.tile) { border: 1px solid var(--line); }
+
 /* ---- image treatment: cinematic, desaturated, vignetted ----------------- */
 .cine { position: relative; overflow: hidden; background: var(--ground-2); }
-.cine > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(0.35) contrast(1.05) brightness(0.82); }
+.cine > img, .cine > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.cine > img { filter: grayscale(0.35) contrast(1.05) brightness(0.82); }
+.cine > video { filter: grayscale(0.2) contrast(1.03) brightness(0.9); }
 .cine::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,12,15,0.15) 0%, rgba(10,12,15,0.55) 60%, rgba(10,12,15,0.92) 100%); pointer-events: none; }
-.cine > :not(img) { position: relative; z-index: 1; }
+.cine > :not(img):not(video) { position: relative; z-index: 1; }
 
 /* faint engineering dot-grid for hero atmosphere */
 .dotgrid { background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 30px 30px; }
+
+/* ---- home hero: video background + entrance choreography ---------------- */
+.hero-grid { display: grid; gap: 32px; align-items: end; }
+.hero-tag-wrap { display: flex; align-items: flex-end; justify-content: flex-start; }
+@media (min-width: 1000px) {
+  .hero-grid { grid-template-columns: 1fr auto; }
+  .hero-tag-wrap { justify-content: flex-end; }
+}
+/* the one sanctioned translucent panel (header-style); square + hairline, not decorative glass */
+.hero-tag {
+  background: rgba(10,12,15,0.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--line); padding: 15px 22px;
+  font-family: var(--display-n); font-weight: 500; letter-spacing: -0.01em;
+  font-size: clamp(16px, 1.6vw, 21px); color: var(--text);
+}
+/* entrance is a progressive enhancement: visible by default, animated only with JS + motion OK */
+.js .hero-fade { opacity: 0; transform: translateY(10px); }
+.js .hero-head { opacity: 0; }   /* revealed by the char-split script */
+@media (prefers-reduced-motion: reduce) { .js .hero-fade, .js .hero-head { opacity: 1; transform: none; } }
 
 /* ---- forms -------------------------------------------------------------- */
 .gx-field {
@@ -128,7 +165,7 @@ img { max-width: 100%; display: block; }
   font-family: var(--body); outline: none; border-radius: 0;
   transition: border-color .15s ease;
 }
-.gx-field::placeholder { color: var(--text-faint); }
+.gx-field::placeholder { color: var(--text-dim); }
 .gx-field:focus { border-color: var(--accent); }
 textarea.gx-field { resize: vertical; line-height: 1.5; }
 .gx-submit {
@@ -150,11 +187,25 @@ textarea.gx-field { resize: vertical; line-height: 1.5; }
 /* ---- focus & motion ----------------------------------------------------- */
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-[data-reveal] { opacity: 0; transform: translateY(14px); transition: opacity .7s ease, transform .7s ease; }
-[data-reveal].in { opacity: 1; transform: none; }
+/* skip link — visible only on keyboard focus */
+.skip-link {
+  position: absolute; left: 12px; top: -60px; z-index: 200;
+  background: var(--accent); color: #0A0C0F; font-family: var(--mono);
+  font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600;
+  padding: 12px 18px; transition: top .15s ease;
+}
+.skip-link:focus { top: 12px; }
+
+/* Reveal-on-scroll is a progressive enhancement: content is visible by default,
+   and the hidden start-state applies ONLY when JS is active (html.js, set in
+   <head> before paint). No JS / crawlers / headless renders never see blank
+   sections, and the motion still plays for everyone else. */
+[data-reveal] { opacity: 1; transform: none; }
+.js [data-reveal] { opacity: 0; transform: translateY(14px); transition: opacity .7s ease, transform .7s ease; }
+.js [data-reveal].in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  [data-reveal] { opacity: 1; transform: none; transition: none; }
+  .js [data-reveal] { opacity: 1; transform: none; transition: none; }
 }
 
 /* ---- responsive --------------------------------------------------------- */
@@ -163,28 +214,9 @@ textarea.gx-field { resize: vertical; line-height: 1.5; }
   .cols-2, .cols-3, .cols-4 { grid-template-columns: 1fr !important; }
 }
 
-/* ============================================================
-   Legacy palette remap
-   Re-skins interior pages whose sections still carry the original
-   light inline styles, so the whole site reads as one dark system.
-   (The home page + shared chrome use tokens and are unaffected.)
-   ============================================================ */
-[style*="background:#eef1f6"] { background: var(--ground) !important; }
-[style*="background:#fff"]    { background: var(--surface) !important; }
-[style*="background:#f5f7fb"] { background: var(--surface-2) !important; }
-[style*="background:#0f2240"] { background: var(--ground) !important; }
-[style*="background:#0a1626"] { background: var(--ground-2) !important; }
-[style*="background:#102444"] { background: var(--surface-2) !important; }
-[style*="background:#14294a"] { background: var(--surface) !important; }
-
-[style*="color:#272d33"], [style*="color:#1c2227"], [style*="color:#0f2240"] { color: var(--text) !important; }
-[style*="color:#33393f"], [style*="color:#454c52"], [style*="color:#5f676e"], [style*="color:#3a4147"] { color: var(--text-dim) !important; }
-[style*="color:#8493ac"], [style*="color:#5b6a85"], [style*="color:#9097a0"], [style*="color:#6c7b96"] { color: var(--text-faint) !important; }
-[style*="color:#1b355e"] { color: var(--accent) !important; }
-
-[style*="solid #d9dfe9"], [style*="solid #e7ebf2"], [style*="solid #dde3ed"], [style*="solid #d2d9e4"] { border-color: var(--line) !important; }
-[style*="border-top:3px solid #1b355e"] { border-top-color: var(--accent) !important; }
-[style*="background:#d9dfe9"] { background: var(--line) !important; }
+/* Interior pages (about, contact, services/[slug], insights) now use the design
+   tokens natively — the legacy light-palette inline-style remap and the
+   square-corner override were removed once those pages were migrated. */
 
 /* ============================================================
    Header (responsive) + mobile polish
@@ -195,7 +227,7 @@ textarea.gx-field { resize: vertical; line-height: 1.5; }
   display: flex; align-items: center; justify-content: space-between; gap: 22px;
 }
 .gx-brand { display: flex; align-items: center; flex: none; }
-.gx-brand img { height: 42px; width: auto; display: block; }
+.gx-brand img { height: 44px; width: auto; display: block; }
 .gx-nav { display: flex; align-items: center; gap: 26px; flex-wrap: wrap;
   font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
 .gx-nav a.navlink { color: var(--text-dim); transition: color .15s ease; }
@@ -224,14 +256,6 @@ textarea.gx-field { resize: vertical; line-height: 1.5; }
 @media (max-width: 760px) {
   :root { --section-y: clamp(48px, 9vh, 84px); }
   .d-xl { font-size: clamp(38px, 12vw, 60px); }
-  /* tame oversized fixed inline display type on interior (legacy) pages */
-  [style*="font-size:54px"], [style*="font-size:52px"], [style*="font-size:50px"],
-  [style*="font-size:46px"], [style*="font-size:44px"] { font-size: 34px !important; }
-  [style*="font-size:40px"], [style*="font-size:38px"], [style*="font-size:36px"] { font-size: 27px !important; }
-  /* comfortable side padding on legacy inline sections */
-  section[style*="padding:88px 32px"], section[style*="padding:84px 32px"],
-  section[style*="padding:80px 32px"], section[style*="padding:72px 32px"],
-  section[style*="padding:64px 32px"] { padding-left: 20px !important; padding-right: 20px !important; }
 }
 
 /* ============================================================

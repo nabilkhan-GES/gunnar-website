@@ -1,7 +1,5 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import SiteHeader from '../components/SiteHeader.astro';
-import SiteFooter from '../components/SiteFooter.astro';
 import { url } from '../lib/links.js';
 import { caseStudies } from '../data/case-studies.js';
 
@@ -15,7 +13,6 @@ const stats = [
 ];
 ---
 <Layout title="Case Studies — Documented Intercepts & Well-Control Projects | Gunnar Energy Services" description="A 100% intercept record across 48 projects in 7 countries — relief wells, blowout intercepts, complex P&A, geothermal and solution mining. Documented and regulator-witnessed.">
-  <SiteHeader />
 
   <!-- HERO -->
   <section class="dotgrid" style="background:var(--ground-2);border-bottom:1px solid var(--line);">
@@ -49,7 +46,7 @@ const stats = [
         {featured.map((c) => (
           <a href={url('/case-studies/' + c.slug + '/')} class="tile tile--link" data-reveal style="display:grid;grid-template-columns:1fr 1.25fr;gap:0;background:var(--surface);">
             <div class="cine" style="min-height:280px;border-right:1px solid var(--line);display:flex;align-items:flex-end;padding:24px;">
-              {c.img && <img src={url(c.img)} alt={c.name} />}
+              {c.img && <img src={url(c.img)} alt={c.name} loading="lazy" decoding="async" />}
               <span class="eyebrow" style="position:relative;font-size:10px;">{c.scope.join(' · ')}</span>
             </div>
             <div style="padding:36px;display:flex;flex-direction:column;">
@@ -76,7 +73,7 @@ const stats = [
         <div class="kicker-row" style="margin-bottom:22px;"><span class="eyebrow">Full project track record</span></div>
         <h2 class="display d-m">2020 to present.</h2>
       </div>
-      <div class="hgrid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr));" data-reveal>
+      <div class="hgrid flow" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr));" data-reveal>
         {all.map((c) => (
           <a href={url('/case-studies/' + c.slug + '/')} class="tile tile--link" style="padding:24px 22px;background:var(--ground);display:flex;flex-direction:column;gap:8px;">
             <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;">
@@ -95,5 +92,4 @@ const stats = [
     </div>
   </section>
 
-  <SiteFooter />
 </Layout>

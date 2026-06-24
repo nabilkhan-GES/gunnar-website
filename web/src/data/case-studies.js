@@ -1042,11 +1042,10 @@ export const caseStudies = [
 
 export const getCase = (slug) => caseStudies.find((c) => c.slug === slug);
 
-// Resolve a hero image for any case: its own photo, else the engineering/
-// planning image for study/well-control work, else the generic cover rig.
+// Resolve a hero image for any case. Every project has an anonymized hero at
+// /assets/case-<slug>.jpg (mapped from the deck, client names stripped from the
+// filename). Featured entries keep their explicit img (same image, legacy name).
 export function caseImage(c) {
   if (c.img) return c.img;
-  const s = c.scope.join(' ').toLowerCase();
-  if (/planning|study|feasibility|well control|surface|detection/.test(s)) return '/assets/case-engineering.jpg';
-  return '/assets/hero.jpg';
+  return '/assets/case-' + c.slug + '.jpg';
 }

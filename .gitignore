@@ -1,0 +1,11 @@
+# Editor / agent tooling — not part of the website
+.claude/
+.impeccable/
+
+# OS / misc
+.DS_Store
+*.log
+
+# Dependencies & build output (also handled in web/.gitignore)
+node_modules/
+web/dist/

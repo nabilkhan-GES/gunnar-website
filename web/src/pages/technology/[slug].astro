@@ -1,7 +1,5 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import SiteHeader from '../../components/SiteHeader.astro';
-import SiteFooter from '../../components/SiteFooter.astro';
 import { url } from '../../lib/links.js';
 import { technology } from '../../data/technology.js';
 
@@ -14,7 +12,6 @@ const { t } = Astro.props;
 const others = technology.filter((x) => x.slug !== t.slug);
 ---
 <Layout title={`${t.name} — ${t.type} | Gunnar Energy Services`} description={t.summary}>
-  <SiteHeader />
 
   <!-- HERO -->
   <section class="dotgrid" style="background:var(--ground-2);border-bottom:1px solid var(--line);">
@@ -75,7 +72,7 @@ const others = technology.filter((x) => x.slug !== t.slug);
     <section class="section" style="background:var(--ground-2);border-top:1px solid var(--line);">
       <div class="wrap">
         <div class="kicker-row" data-reveal style="margin-bottom:36px;"><span class="eyebrow">Capabilities</span></div>
-        <div class="hgrid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr));" data-reveal>
+        <div class="hgrid flow" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr));" data-reveal>
           {t.highlights.map((h) => (
             <div style="padding:26px 24px;display:flex;gap:14px;align-items:flex-start;background:var(--ground);">
               <span style="color:var(--accent);font-family:var(--mono);flex:none;">—</span>
@@ -118,7 +115,7 @@ const others = technology.filter((x) => x.slug !== t.slug);
   <section class="section">
     <div class="wrap">
       <div class="kicker-row" data-reveal style="margin-bottom:36px;"><span class="eyebrow">The rest of the arsenal</span></div>
-      <div class="hgrid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));" data-reveal>
+      <div class="hgrid arsenal-grid" data-reveal>
         {others.map((o) => (
           <a href={url('/technology/' + o.slug + '/')} class="tile tile--link" style="padding:26px 24px;background:var(--ground);">
             <div class="eyebrow eyebrow--dim" style="margin-bottom:10px;">{o.type}</div>
@@ -130,5 +127,4 @@ const others = technology.filter((x) => x.slug !== t.slug);
     </div>
   </section>
 
-  <SiteFooter />
 </Layout>

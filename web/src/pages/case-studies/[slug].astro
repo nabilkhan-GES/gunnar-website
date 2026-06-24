@@ -1,7 +1,5 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import SiteHeader from '../../components/SiteHeader.astro';
-import SiteFooter from '../../components/SiteFooter.astro';
 import { url } from '../../lib/links.js';
 import { caseStudies, caseImage } from '../../data/case-studies.js';
 
@@ -15,7 +13,6 @@ const detailed = !!c.challenge;
 const heroImg = caseImage(c);
 ---
 <Layout title={`${c.name} — ${c.location} | Case Study | Gunnar Energy Services`} description={c.title}>
-  <SiteHeader />
 
   <!-- HERO -->
   <section class="dotgrid" style="position:relative;background:var(--ground-2);border-bottom:1px solid var(--line);overflow:hidden;min-height:62vh;display:flex;align-items:flex-end;">
@@ -121,5 +118,4 @@ const heroImg = caseImage(c);
     </div>
   </section>
 
-  <SiteFooter />
 </Layout>

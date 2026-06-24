@@ -1,7 +1,5 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import SiteHeader from '../components/SiteHeader.astro';
-import SiteFooter from '../components/SiteFooter.astro';
 import { url } from '../lib/links.js';
 import { technology } from '../data/technology.js';
 
@@ -20,7 +18,6 @@ const compare = [
 ];
 ---
 <Layout title="Technology — Magnetic Ranging Hardware & Software | Gunnar Energy Services" description="DeadAhead™, DeadSet™, CTRWD™, Torped™ and EverReady™ ranging methods, driven by TopGun™ — the only commercial end-to-end ranging software in the industry.">
-  <SiteHeader />
 
   <!-- HERO -->
   <section class="dotgrid" style="background:var(--ground-2);border-bottom:1px solid var(--line);">
@@ -38,7 +35,7 @@ const compare = [
   <section class="section">
     <div class="wrap">
       <div class="kicker-row" data-reveal style="margin-bottom:40px;"><span class="eyebrow">Ranging methods · Hardware</span></div>
-      <div class="hgrid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));" data-reveal>
+      <div class="hgrid method-grid" data-reveal>
         {methods.map((m) => (
           <a href={url('/technology/' + m.slug + '/')} class="tile tile--link" style="padding:30px 26px;background:var(--ground);display:flex;flex-direction:column;">
             <div class="eyebrow eyebrow--dim" style="margin-bottom:14px;">{m.type}</div>
@@ -99,5 +96,4 @@ const compare = [
     </div>
   </section>
 
-  <SiteFooter />
 </Layout>

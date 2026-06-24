@@ -1,7 +1,5 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import SiteHeader from '../../components/SiteHeader.astro';
-import SiteFooter from '../../components/SiteFooter.astro';
 import { href, url } from '../../lib/links.js';
 
 export async function getStaticPaths() {
@@ -24,96 +22,94 @@ const thumb = vid ? `https://i.ytimg.com/vi/${vid}/hqdefault.jpg` : '';
 const related = (a.related || []).map((r) => ({ ...r, url: url(href(r.href)) }));
 ---
 <Layout title={`${a.title} | Gunnar Energy Services`} description={a.lede}>
-  <SiteHeader />
 
-  <section style="background:#0f2240;color:#eef1f6;position:relative;overflow:hidden;">
+  <section style="background:var(--ground);color:var(--text);position:relative;overflow:hidden;">
     <img src={url(banner)} alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.5;" />
     <div style="position:absolute;inset:0;background:linear-gradient(120deg,rgba(15,34,64,0.96),rgba(15,34,64,0.7));"></div>
-    <div style="max-width:880px;margin:0 auto;position:relative;padding:56px 32px 60px;">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.08em;color:#aeb8c8;margin-bottom:24px;"><a href={url('/')} style="color:#aeb8c8;">Home</a> &nbsp;/&nbsp; <a href={url('/insights/')} style="color:#aeb8c8;">Insights</a> &nbsp;/&nbsp; <span style="color:#feee00;">{a.crumb}</span></div>
+    <div style="max-width:880px;margin:0 auto;position:relative;padding:56px var(--pad) 60px;">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.08em;color:var(--text-dim);margin-bottom:24px;"><a href={url('/')} style="color:var(--text-dim);">Home</a> &nbsp;/&nbsp; <a href={url('/insights/')} style="color:var(--text-dim);">Insights</a> &nbsp;/&nbsp; <span style="color:var(--accent);">{a.crumb}</span></div>
       <div style="display:flex;gap:14px;align-items:center;margin-bottom:18px;">
-        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.12em;color:#feee00;">{a.tagline}</span>
-        <span style="font-size:13px;color:#c3cee0;">{a.read}</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.12em;color:var(--accent);">{a.tagline}</span>
+        <span style="font-size:13px;color:var(--text-dim);">{a.read}</span>
       </div>
-      <h1 style="font-family:'Archivo',sans-serif;font-weight:900;font-size:44px;line-height:1.05;letter-spacing:-0.025em;margin:0 0 22px;max-width:22ch;">{a.title}</h1>
+      <h1 style="font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(30px,5vw,44px);line-height:1.05;letter-spacing:-0.025em;margin:0 0 22px;max-width:22ch;">{a.title}</h1>
       <div style="display:flex;align-items:center;gap:12px;border-top:1px solid rgba(255,255,255,0.18);padding-top:18px;">
-        <span style="width:38px;height:38px;border-radius:50%;border:2px solid #feee00;display:inline-flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:14px;color:#feee00;">GE</span>
+        <span style="width:38px;height:38px;border-radius:50%;border:2px solid var(--accent);display:inline-flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:14px;color:var(--accent);">GE</span>
         <div>
-          <div style="font-size:14px;font-weight:600;color:#eef1f6;">Gunnar Engineering Team</div>
-          <div style="font-size:12.5px;color:#c3cee0;">Wellbore Positioning &amp; Intercept</div>
+          <div style="font-size:14px;font-weight:600;color:var(--text);">Gunnar Engineering Team</div>
+          <div style="font-size:12.5px;color:var(--text-dim);">Wellbore Positioning &amp; Intercept</div>
         </div>
       </div>
     </div>
   </section>
 
-  <section style="padding:56px 32px 40px;background:#fff;border-bottom:1px solid #d9dfe9;">
+  <section style="padding:56px var(--pad) 40px;background:var(--surface);border-bottom:1px solid var(--line);">
     <article style="max-width:720px;margin:0 auto;">
-      <p style="font-size:19px;line-height:1.7;color:#1c2227;margin:0 0 28px;font-weight:500;">{a.lede}</p>
+      <p style="font-size:19px;line-height:1.7;color:var(--text);margin:0 0 28px;font-weight:500;">{a.lede}</p>
 
       {blocks.map((b) => (
         <>
-          {b.kind === 'H' && <h2 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:26px;letter-spacing:-0.01em;color:#0f2240;margin:38px 0 14px;">{b.text}</h2>}
-          {b.kind === 'P' && <p style="font-size:17px;line-height:1.75;color:#33393f;margin:0 0 20px;">{b.text}</p>}
-          {b.kind === 'Q' && <div style="border-left:3px solid #feee00;background:#f5f7fb;padding:22px 26px;margin:0 0 24px;font-family:'Archivo',sans-serif;font-weight:600;font-size:21px;line-height:1.4;color:#0f2240;">{b.text}</div>}
+          {b.kind === 'H' && <h2 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:26px;letter-spacing:-0.01em;color:var(--text);margin:38px 0 14px;">{b.text}</h2>}
+          {b.kind === 'P' && <p style="font-size:17px;line-height:1.75;color:var(--text-dim);margin:0 0 20px;">{b.text}</p>}
+          {b.kind === 'Q' && <div style="background:var(--surface);border:1px solid var(--line);padding:22px 26px;margin:0 0 24px;font-family:'Archivo',sans-serif;font-weight:600;font-size:21px;line-height:1.4;color:var(--text);">{b.text}</div>}
         </>
       ))}
 
       {vid && (
         <div style="margin:36px 0;">
-          <div data-video-frame style="position:relative;width:100%;aspect-ratio:16/9;background:#0a1626;overflow:hidden;border:1px solid #d9dfe9;">
-            <div data-video-facade data-embed={embed} data-title={a.title} style={`position:absolute;inset:0;cursor:pointer;background-image:url('${thumb}');background-size:cover;background-position:center;`}>
+          <div data-video-frame style="position:relative;width:100%;aspect-ratio:16/9;background:var(--ground-2);overflow:hidden;border:1px solid var(--line);">
+            <div data-video-facade role="button" tabindex="0" aria-label={`Play video: ${a.title}`} data-embed={embed} data-title={a.title} style={`position:absolute;inset:0;cursor:pointer;background-image:url('${thumb}');background-size:cover;background-position:center;`}>
               <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,22,38,0.1),rgba(10,22,38,0.6));"></div>
-              <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:74px;height:74px;border-radius:50%;background:#feee00;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 30px rgba(0,0,0,0.35);">
-                <div style="width:0;height:0;border-left:23px solid #0a1626;border-top:14px solid transparent;border-bottom:14px solid transparent;margin-left:5px;"></div>
+              <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:74px;height:74px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 30px rgba(0,0,0,0.35);">
+                <div style="width:0;height:0;border-left:23px solid var(--ground);border-top:14px solid transparent;border-bottom:14px solid transparent;margin-left:5px;"></div>
               </div>
             </div>
           </div>
-          {a.videoCaption && <div style="font-size:13px;color:#8493ac;margin-top:10px;font-style:italic;">{a.videoCaption}</div>}
+          {a.videoCaption && <div style="font-size:13px;color:var(--text-faint);margin-top:10px;font-style:italic;">{a.videoCaption}</div>}
         </div>
       )}
 
       {blocks2.map((b) => (
         <>
-          {b.kind === 'H' && <h2 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:26px;letter-spacing:-0.01em;color:#0f2240;margin:38px 0 14px;">{b.text}</h2>}
-          {b.kind === 'P' && <p style="font-size:17px;line-height:1.75;color:#33393f;margin:0 0 20px;">{b.text}</p>}
+          {b.kind === 'H' && <h2 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:26px;letter-spacing:-0.01em;color:var(--text);margin:38px 0 14px;">{b.text}</h2>}
+          {b.kind === 'P' && <p style="font-size:17px;line-height:1.75;color:var(--text-dim);margin:0 0 20px;">{b.text}</p>}
         </>
       ))}
 
-      <div style="background:#0f2240;color:#eef1f6;padding:30px 32px;margin:36px 0 8px;">
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#feee00;margin-bottom:16px;">KEY TAKEAWAYS</div>
-        <ul style="margin:0;padding-left:20px;font-size:15.5px;line-height:1.7;color:#c3cee0;">
+      <div style="background:var(--ground);color:var(--text);padding:30px var(--pad);margin:36px 0 8px;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--accent);margin-bottom:16px;">KEY TAKEAWAYS</div>
+        <ul style="margin:0;padding-left:20px;font-size:15.5px;line-height:1.7;color:var(--text-dim);">
           {(a.takeaways || []).map((t) => <li style="margin-bottom:8px;">{t}</li>)}
         </ul>
       </div>
     </article>
   </section>
 
-  <section style="padding:56px 32px;background:#eef1f6;">
-    <div style="max-width:720px;margin:0 auto;background:#fff;border:1px solid #d9dfe9;border-top:3px solid #feee00;padding:34px;display:flex;justify-content:space-between;align-items:center;gap:28px;flex-wrap:wrap;">
+  <section style="padding:56px var(--pad);background:var(--ground);">
+    <div style="max-width:720px;margin:0 auto;background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--accent);padding:34px;display:flex;justify-content:space-between;align-items:center;gap:28px;flex-wrap:wrap;">
       <div>
-        <h2 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:24px;letter-spacing:-0.01em;margin:0 0 8px;color:#0f2240;">{a.ctaTitle}</h2>
-        <p style="font-size:15px;color:#5f676e;margin:0;max-width:46ch;">{a.ctaBody}</p>
+        <h2 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:24px;letter-spacing:-0.01em;margin:0 0 8px;color:var(--text);">{a.ctaTitle}</h2>
+        <p style="font-size:15px;color:var(--text-dim);margin:0;max-width:46ch;">{a.ctaBody}</p>
       </div>
-      <a href={url('/contact/')} style="background:#feee00;color:#0a1626;font-weight:700;font-size:15px;padding:15px 26px;border-radius:3px;white-space:nowrap;">Request a feasibility review →</a>
+      <a href={url('/contact/')} style="background:var(--accent);color:var(--ground);font-weight:700;font-size:15px;padding:15px 26px;border-radius:0;white-space:nowrap;">Request a feasibility review →</a>
     </div>
   </section>
 
-  <section style="padding:8px 32px 80px;background:#eef1f6;">
+  <section style="padding:8px var(--pad) 80px;background:var(--ground);">
     <div style="max-width:1240px;margin:0 auto;">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#1b355e;margin:24px 0 18px;">RELATED READING</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.2em;color:var(--accent);margin:24px 0 18px;">RELATED READING</div>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
         {related.map((r) => (
-          <a href={r.url} class="hov-border-navy" style="background:#fff;border:1px solid #d9dfe9;padding:24px;">
-            <div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.12em;color:#1b355e;margin-bottom:10px;">{r.cat}</div>
-            <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;line-height:1.25;margin:0 0 8px;color:#0f2240;">{r.title}</h3>
-            <span style="font-size:13px;font-weight:600;color:#1b355e;">Read →</span>
+          <a href={r.url} class="hov-border-navy" style="background:var(--surface);border:1px solid var(--line);padding:24px;">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.12em;color:var(--accent);margin-bottom:10px;">{r.cat}</div>
+            <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:17px;line-height:1.25;margin:0 0 8px;color:var(--text);">{r.title}</h3>
+            <span style="font-size:13px;font-weight:600;color:var(--accent);">Read →</span>
           </a>
         ))}
       </div>
     </div>
   </section>
 
-  <SiteFooter />
 </Layout>
 
 <script>
